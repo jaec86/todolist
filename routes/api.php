@@ -5,3 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/account/login', 'AccountLoginController@login')->name('account.login');
 Route::post('account/logout', 'AccountLoginController@logout')->name('account.logout');
+Route::post('/account/create', 'AccountCreateController@register')->name('account.create');
+Route::post('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
