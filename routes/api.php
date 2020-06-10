@@ -7,3 +7,4 @@ Route::post('/account/login', 'AccountLoginController@login')->name('account.log
 Route::post('account/logout', 'AccountLoginController@logout')->name('account.logout');
 Route::post('/account/create', 'AccountCreateController@register')->name('account.create');
 Route::post('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
+Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
