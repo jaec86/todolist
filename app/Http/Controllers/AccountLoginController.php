@@ -22,4 +22,9 @@ class AccountLoginController extends Controller
             'user' => $user
         ]);
     }
+
+    protected function loggedOut(Request $request)
+    {
+        return response()->json(['message' => 'user_logged_out']);
+    }
 }

@@ -17,6 +17,11 @@ class AccountLoginTest extends TestCase
         return $this->postJson(route('account.login'), $data);
     }
 
+    protected function logout()
+    {
+        return $this->postJson(route('account.logout'));
+    }
+
     /** @test */
     public function user_already_logged_in()
     {
@@ -92,5 +97,18 @@ class AccountLoginTest extends TestCase
             ]);
 
         $this->assertTrue(Auth::user()->id === $user->id);
+    }
+
+    /** @test */
+    public function user_logged_out()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)
+            ->logout()
+            ->assertStatus(200)
+            ->assertJson(['message' => 'user_logged_out']);
+
+        $this->assertTrue(is_null(Auth::user()));
     }
 }
