@@ -37,6 +37,20 @@ class TodosController extends Controller
         ]);
     }
 
+    public function update(Todo $todo, Request $request)
+    {
+        abort_if($todo->user_id != Auth::user()->id, 404, 'todo_not_found');
+
+        $validatedData = $this->validateData($request);
+
+        $todo->update($validatedData);
+
+        return response()->json([
+            'message' => 'todo_updated',
+            'todo' => $todo
+        ]);
+    }
+
     protected function validateData(Request $request)
     {
         return $request->validate([
