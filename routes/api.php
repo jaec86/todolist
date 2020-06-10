@@ -14,3 +14,4 @@ Route::post('/password/reset', 'PasswordResetController@reset')->name('password.
 
 // PROFILE
 Route::get('/profile', 'ProfileController@user')->name('profile.user');
+Route::put('/profile', 'ProfileController@update')->name('profile.update');
