@@ -16,3 +16,6 @@ Route::post('/password/reset', 'PasswordResetController@reset')->name('password.
 Route::get('/profile', 'ProfileController@user')->name('profile.user');
 Route::put('/profile', 'ProfileController@update')->name('profile.update');
 Route::put('/profile/password', 'ProfileController@updatePassword')->name('profile.password');
+
+// TODOS
+Route::get('/todos', 'TodosController@index')->name('todos.index');
