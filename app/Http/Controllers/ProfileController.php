@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -41,6 +43,26 @@ class ProfileController extends Controller
 
         return response()->json([
             'message' => 'profile_updated',
+            'user' => $user
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate(['password' => ['required', 'string', 'min:8', 'confirmed']]);
+
+        $user->password = Hash::make($request->password);
+
+        $user->setRememberToken(Str::random(60));
+
+        $user->save();
+
+        Auth::guard()->login($user);
+
+        return response()->json([
+            'message' => 'password_updated',
             'user' => $user
         ]);
     }
