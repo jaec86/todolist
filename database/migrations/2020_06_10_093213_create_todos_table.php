@@ -14,6 +14,7 @@ class CreateTodosTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->text('tags')->nullable();
+            $table->integer('priority');
             $table->boolean('done')->default(false);
             $table->timestamps();
 

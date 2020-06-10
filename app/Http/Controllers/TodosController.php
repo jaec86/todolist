@@ -13,6 +13,7 @@ class TodosController extends Controller
         $todos = Auth::user()->todos()
             ->search($request->search)
             ->orderBy('done', 'asc')
+            ->orderBy('priority', 'desc')
             ->orderBy('date', 'desc')
             ->paginate(20);
 
@@ -51,12 +52,22 @@ class TodosController extends Controller
         ]);
     }
 
+    public function delete(Todo $todo)
+    {
+        abort_if($todo->user_id != Auth::user()->id, 404, 'todo_not_found');
+
+        $todo->delete();
+
+        return response()->json(['message' => 'todo_deleted']);
+    }
+
     protected function validateData(Request $request)
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['string', 'max:255'],
-            'tags' => ['array']
+            'tags' => ['array'],
+            'priority' => ['required', 'numeric', 'in:1,2,3']
         ]);
     }
 }

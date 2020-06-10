@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Todo extends Model
 {
     protected $fillable = [
-        'title', 'description', 'tags',
+        'title', 'description', 'tags', 'priority',
     ];
 
     public function scopeSearch($query, $search)

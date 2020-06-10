@@ -21,3 +21,4 @@ Route::put('/profile/password', 'ProfileController@updatePassword')->name('profi
 Route::get('/todos', 'TodosController@index')->name('todos.index');
 Route::post('/todos', 'TodosController@create')->name('todos.create');
 Route::put('/todos/{todo}', 'TodosController@update')->name('todos.update');
+Route::delete('/todos/{todo}', 'TodosController@delete')->name('todos.delete');

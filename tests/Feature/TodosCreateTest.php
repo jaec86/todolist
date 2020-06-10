@@ -93,9 +93,42 @@ class TodosCreateTest extends TestCase
     }
 
     /** @test */
+    public function priority_required()
+    {
+        $this->createTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_required']]
+            ]);
+    }
+
+    /** @test */
+    public function priority_not_numeric()
+    {
+        $this->createTodo(['priority' => Str::random(10)])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_not_numeric']]
+            ]);   
+    }
+
+    /** @test */
+    public function priority_invalid()
+    {
+        $this->createTodo(['priority' => 10])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_invalid']]
+            ]);   
+    }
+
+    /** @test */
     public function todo_created()
     {
-        $todo = factory(Todo::class)->make()->only(['title', 'description']);
+        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority']);
 
         $response = $this->createTodo($todo)
             ->assertStatus(200)

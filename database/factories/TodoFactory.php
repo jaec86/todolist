@@ -9,6 +9,7 @@ $factory->define(Todo::class, function (Faker $faker) {
         'user_id' => factory(User::class),
         'title' => $faker->sentence(),
         'description' => $faker->paragraph(),
-        'tags' => null
+        'tags' => null,
+        'priority' => 1
     ];
 });

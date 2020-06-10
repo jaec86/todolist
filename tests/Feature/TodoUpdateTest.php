@@ -114,9 +114,42 @@ class TodoUpdateTest extends TestCase
     }
 
     /** @test */
+    public function priority_required()
+    {
+        $this->updateTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_required']]
+            ]);
+    }
+
+    /** @test */
+    public function priority_not_numeric()
+    {
+        $this->updateTodo(['priority' => Str::random(10)])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_not_numeric']]
+            ]);   
+    }
+
+    /** @test */
+    public function priority_invalid()
+    {
+        $this->updateTodo(['priority' => 10])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['priority' => ['priority_invalid']]
+            ]);   
+    }
+
+    /** @test */
     public function todo_updated()
     {
-        $todo = factory(Todo::class)->make()->only(['title', 'description']);
+        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority']);
 
         $this->updateTodo($todo)
             ->assertStatus(200)
