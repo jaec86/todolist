@@ -19,3 +19,4 @@ Route::put('/profile/password', 'ProfileController@updatePassword')->name('profi
 
 // TODOS
 Route::get('/todos', 'TodosController@index')->name('todos.index');
+Route::post('/todos', 'TodosController@create')->name('todos.create');
