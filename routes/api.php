@@ -9,3 +9,4 @@ Route::post('/account/create', 'AccountCreateController@register')->name('accoun
 Route::post('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
 Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 Route::post('/password/forgot', 'PasswordForgotController@sendResetLinkEmail')->name('password.forgot');
+Route::post('/password/reset', 'PasswordResetController@reset')->name('password.reset');
