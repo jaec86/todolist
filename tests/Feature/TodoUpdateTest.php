@@ -81,6 +81,17 @@ class TodoUpdateTest extends TestCase
     }
 
     /** @test */
+    public function description_required()
+    {
+        $this->updateTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['description' => ['description_required']]
+            ]);
+    }
+
+    /** @test */
     public function description_not_string()
     {
         $this->updateTodo(['description' => 10])
@@ -103,13 +114,13 @@ class TodoUpdateTest extends TestCase
     }
 
     /** @test */
-    public function tags_not_array()
+    public function tags_not_string()
     {
         $this->updateTodo(['tags' => 1])
             ->assertStatus(422)
             ->AssertJson([
                 'message' => 'validation_error',
-                'errors' => ['tags' => ['tags_not_array']]
+                'errors' => ['tags' => ['tags_not_string']]
             ]);
     }
 
@@ -147,9 +158,31 @@ class TodoUpdateTest extends TestCase
     }
 
     /** @test */
+    public function done_required()
+    {
+        $this->updateTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['done' => ['done_required']]
+            ]);
+    }
+
+    /** @test */
+    public function done_not_boolean()
+    {
+        $this->updateTodo(['done' => Str::random(10)])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['done' => ['done_not_boolean']]
+            ]);
+    }
+
+    /** @test */
     public function todo_updated()
     {
-        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority']);
+        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority', 'done']);
 
         $this->updateTodo($todo)
             ->assertStatus(200)

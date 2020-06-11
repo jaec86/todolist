@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -128,5 +129,7 @@ class PasswordResetTest extends TestCase
             'password_confirmation' => 'new_password'
         ])->assertStatus(200)
             ->assertJson(['message' => 'password_was_reset']);
+
+        $this->assertTrue(Auth::user()->id === $user->id);
     }
 }

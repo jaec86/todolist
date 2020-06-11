@@ -10,6 +10,7 @@ $factory->define(Todo::class, function (Faker $faker) {
         'title' => $faker->sentence(),
         'description' => $faker->paragraph(),
         'tags' => null,
-        'priority' => 1
+        'priority' => 1,
+        'done' => 0
     ];
 });

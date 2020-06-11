@@ -60,6 +60,17 @@ class TodosCreateTest extends TestCase
     }
 
     /** @test */
+    public function description_required()
+    {
+        $this->createTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['description' => ['description_required']]
+            ]);
+    }
+
+    /** @test */
     public function description_not_string()
     {
         $this->createTodo(['description' => 10])
@@ -82,13 +93,13 @@ class TodosCreateTest extends TestCase
     }
 
     /** @test */
-    public function tags_not_array()
+    public function tags_not_string()
     {
         $this->createTodo(['tags' => 1])
             ->assertStatus(422)
             ->AssertJson([
                 'message' => 'validation_error',
-                'errors' => ['tags' => ['tags_not_array']]
+                'errors' => ['tags' => ['tags_not_string']]
             ]);
     }
 
@@ -126,9 +137,31 @@ class TodosCreateTest extends TestCase
     }
 
     /** @test */
+    public function done_required()
+    {
+        $this->createTodo()
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['done' => ['done_required']]
+            ]);
+    }
+
+    /** @test */
+    public function done_not_boolean()
+    {
+        $this->createTodo(['done' => Str::random(10)])
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'validation_error',
+                'errors' => ['done' => ['done_not_boolean']]
+            ]);
+    }
+
+    /** @test */
     public function todo_created()
     {
-        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority']);
+        $todo = factory(Todo::class)->make()->only(['title', 'description', 'priority', 'done']);
 
         $response = $this->createTodo($todo)
             ->assertStatus(200)

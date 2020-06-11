@@ -8,13 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class TodosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('verified')->except('index');
+    }
+    
     public function index(Request $request)
     {
         $todos = Auth::user()->todos()
             ->search($request->search)
             ->orderBy('done', 'asc')
             ->orderBy('priority', 'desc')
-            ->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(20);
 
         return response()->json([
@@ -65,9 +71,10 @@ class TodosController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['string', 'max:255'],
-            'tags' => ['array'],
-            'priority' => ['required', 'numeric', 'in:1,2,3']
+            'description' => ['required', 'string', 'max:255'],
+            'tags' => ['nullable', 'string'],
+            'priority' => ['required', 'numeric', 'in:1,2,3'],
+            'done' => ['required', 'boolean']
         ]);
     }
 }
